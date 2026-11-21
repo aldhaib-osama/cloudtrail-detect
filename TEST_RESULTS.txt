@@ -1,0 +1,73 @@
+test_all_scenarios_detected_no_false_rules (test_ctdetect.T) ... ok
+test_bruteforce_needs_success_and_window (test_ctdetect.T) ... ok
+test_cli_evaluate_exit_zero (test_ctdetect.T) ... ok
+test_key_for_self_is_not_flagged (test_ctdetect.T) ... ok
+test_loader_handles_both_formats_and_skips_bad (test_ctdetect.T) ... ok
+test_public_policy_with_condition_not_flagged (test_ctdetect.T) ... ok
+test_smoke (test_depth.Bench) ... ok
+test_validate_rules_and_scan (test_depth.CLI) ... ok
+test_distinct (test_depth.DSL) ... ok
+test_duplicate_ids_and_bundled_rules_valid (test_depth.DSL) ... ok
+test_lru_bounds_state_and_evicts (test_depth.DSL) ... ok
+test_nested_fields_and_ops (test_depth.DSL) ... ok
+test_sequence_order_timeout_restart (test_depth.DSL) ... ok
+test_threshold_window_and_group (test_depth.DSL) ... ok
+test_validation_errors_are_specific (test_depth.DSL) ... ok
+test_reorder_buffer_and_late_counter (test_depth.Ingest) ... ok
+test_tree_gz_jsonl_and_json_with_diagnostics (test_depth.Ingest) ... ok
+test_clean_on_labelled_set (test_depth.Labelled) ... ok
+test_hard_negatives_actually_bite (test_depth.Labelled)
+Loosen thresholds in memory and confirm the evaluation then reports false positives. ... ok
+test_allowlist_cooldown_and_unused (test_depth.PipelineTests) ... ok
+test_allowlist_hygiene (test_depth.PipelineTests) ... ok
+test_allowlist_cannot_be_global_mute_or_bad_type (test_independent_review.IndependentReview) ... ok
+test_empty_directory_is_not_successful_scan (test_independent_review.IndependentReview) ... {"ingest": {"files": 0, "unreadable_files": 0, "records": 0, "accepted": 0, "late": 0, "capacity_releases": 0, "rejected": {}}, "pipeline": {"alerts": 0, "allowlisted": 0, "suppressed": 0, "below_severity": 0}, "dsl": {}}
+error: scan needs at least one rule
+ok
+test_missing_distinct_value_not_counted (test_independent_review.IndependentReview) ... ok
+test_no_cooldown_does_not_retain_unneeded_keys (test_independent_review.IndependentReview) ... ok
+test_one_actor_distinct_queue_is_capped_and_loss_counted (test_independent_review.IndependentReview) ... ok
+test_reorder_count_cap_and_late_drop_preserve_order (test_independent_review.IndependentReview) ... ok
+test_retrograde_events_rejected_by_stateful_rules (test_independent_review.IndependentReview) ... ok
+test_rule_validation_shapes_types_and_typos (test_independent_review.IndependentReview) ... ok
+test_nonpositive_benchmark_and_negative_scan_controls_rejected (test_independent_review.PackagingAndInputReview) ... error: events and principals must be positive
+error: skew must be nonnegative and buffer capacity must be positive
+error: cooldown must be nonnegative
+ok
+test_packaged_rules_match_editable_examples (test_independent_review.PackagingAndInputReview) ... ok
+test_failed_mutations_not_reported_as_success (test_regressions.Regression) ... ok
+test_loader_skips_invalid_lines_types_and_nested_fields (test_regressions.Regression) ... ok
+test_multiple_seeds_and_benign_only (test_regressions.Regression) ... ok
+test_s3_single_statement_and_malformed_policy (test_regressions.Regression) ... ok
+test_same_rule_wrong_actor_alert_is_not_hidden (test_regressions.Regression) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 1.047s
+
+OK
+{
+  "events": 743,
+  "alerts": 7,
+  "expected_rules": [
+    "CT001",
+    "CT002",
+    "CT003",
+    "CT004",
+    "CT005",
+    "CT006",
+    "CT007"
+  ],
+  "fired_rules": [
+    "CT001",
+    "CT002",
+    "CT003",
+    "CT004",
+    "CT005",
+    "CT006",
+    "CT007"
+  ],
+  "benign_alerts": 0,
+  "missed": [],
+  "unexpected": []
+}
+0 alert(s)
