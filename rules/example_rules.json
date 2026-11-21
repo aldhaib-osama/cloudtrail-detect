@@ -1,0 +1,161 @@
+{
+  "rules": [
+    {
+      "id": "D001",
+      "type": "threshold",
+      "title": "Many distinct API calls denied (enumeration)",
+      "severity": "MEDIUM",
+      "mitre": "T1069.003",
+      "where": {
+        "field": "denied",
+        "op": "eq",
+        "value": true
+      },
+      "group_by": "principal",
+      "distinct": "eventName",
+      "count": 8,
+      "window_seconds": 300
+    },
+    {
+      "id": "D002",
+      "type": "sequence",
+      "title": "Denied IAM attachment followed by successful attachment (review retry)",
+      "severity": "HIGH",
+      "mitre": "T1098",
+      "group_by": "principal",
+      "within_seconds": 900,
+      "steps": [
+        {
+          "all": [
+            {
+              "field": "source",
+              "op": "eq",
+              "value": "iam.amazonaws.com"
+            },
+            {
+              "field": "denied",
+              "op": "eq",
+              "value": true
+            },
+            {
+              "field": "name",
+              "op": "startswith",
+              "value": "Attach"
+            }
+          ]
+        },
+        {
+          "all": [
+            {
+              "field": "source",
+              "op": "eq",
+              "value": "iam.amazonaws.com"
+            },
+            {
+              "not": {
+                "field": "errorCode",
+                "op": "exists"
+              }
+            },
+            {
+              "field": "name",
+              "op": "startswith",
+              "value": "Attach"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "D003",
+      "type": "match",
+      "title": "Console login without MFA by an IAM user",
+      "severity": "MEDIUM",
+      "mitre": "T1078.004",
+      "where": {
+        "all": [
+          {
+            "field": "name",
+            "op": "eq",
+            "value": "ConsoleLogin"
+          },
+          {
+            "field": "responseElements.ConsoleLogin",
+            "op": "eq",
+            "value": "Success"
+          },
+          {
+            "field": "additionalEventData.MFAUsed",
+            "op": "eq",
+            "value": "No"
+          },
+          {
+            "field": "userIdentity.type",
+            "op": "eq",
+            "value": "IAMUser"
+          },
+          {
+            "field": "source",
+            "op": "eq",
+            "value": "signin.amazonaws.com"
+          }
+        ]
+      }
+    },
+    {
+      "id": "D004",
+      "type": "threshold",
+      "title": "Burst of secret reads by one principal",
+      "severity": "HIGH",
+      "mitre": "T1555",
+      "where": {
+        "all": [
+          {
+            "not": {
+              "field": "errorCode",
+              "op": "exists"
+            }
+          },
+          {
+            "any": [
+              {
+                "all": [
+                  {
+                    "field": "source",
+                    "op": "eq",
+                    "value": "secretsmanager.amazonaws.com"
+                  },
+                  {
+                    "field": "name",
+                    "op": "eq",
+                    "value": "GetSecretValue"
+                  }
+                ]
+              },
+              {
+                "all": [
+                  {
+                    "field": "source",
+                    "op": "eq",
+                    "value": "ssm.amazonaws.com"
+                  },
+                  {
+                    "field": "name",
+                    "op": "in",
+                    "value": [
+                      "GetParameter",
+                      "GetParametersByPath"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "group_by": "principal",
+      "count": 25,
+      "window_seconds": 120
+    }
+  ]
+}
