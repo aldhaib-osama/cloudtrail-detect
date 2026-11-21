@@ -1,0 +1,15 @@
+[project]
+name = "ctdetect"
+version = "0.1.0"
+description = "Detection-as-code engine for AWS CloudTrail logs (stateful rules, synthetic attack generator, evaluation)"
+requires-python = ">=3.9"
+[project.scripts]
+ctdetect = "ctdetect.cli:main"
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ctdetect = ["data/*.json"]
